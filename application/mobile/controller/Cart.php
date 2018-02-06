@@ -783,4 +783,11 @@ class Cart extends MobileBase {
             
         }      
     }
+
+    public function submit_success(){
+        $order_id = $invoice_title = trim(I("order_id"));
+        $order = M("order")->where("order_id=".$order_id)->find();
+        $this->assign('order', $order);
+        return $this->fetch('success');
+    }
 }
