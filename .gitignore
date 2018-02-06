@@ -2,3 +2,6 @@
 composer.lock
 *.log
 thinkphp
+/build.php
+/.project
+/composer.json
