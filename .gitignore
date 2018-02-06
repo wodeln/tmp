@@ -6,3 +6,4 @@ thinkphp
 /.project
 /composer.json
 /public/upload/
+/application/database.php
