@@ -90,7 +90,7 @@
                     <span class="red">￥{$list['order_amount']}</span><span class="threel" id="goodsnum">共{$list.count_goods_num}件</span>
                 </span>
                         <if condition="$list.pay_btn eq 1">
-                            <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">立即付款</a>
+                            <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart41',array('order_id'=>$list['order_id']))}">立即付款</a>
                         </if>
                         <if condition="$list.cancel_btn eq 1">
                             <if condition="$list.pay_status eq 0">

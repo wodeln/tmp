@@ -68,8 +68,13 @@ class Order extends Base {
         $keyType = I("keytype");
         $keywords = I('keywords','','trim');
         
-        $consignee =  ($keyType && $keyType == 'consignee') ? $keywords : I('consignee','','trim');
-        $consignee ? $condition['consignee'] = trim($consignee) : false;
+        /*$consignee =  ($keyType && $keyType == 'consignee') ? $keywords : I('consignee','','trim');
+        $consignee ? $condition['consignee'] = trim($consignee) : false;*/
+
+        if($keyType == 'consignee' && $keywords!=""){
+            $condition['consignee|mobile|address'] = $keywords;
+//            $condition['consignee&mobile&address'] = array(array("lt","$keywords"),"$keywords","$keywords",'_multi'=>true);
+        }
 
         if($begin && $end){
         	$condition['add_time'] = array('between',"$begin,$end");
@@ -87,6 +92,8 @@ class Order extends Base {
         $count = M('order')->where($condition)->count();
         $Page  = new AjaxPage($count,20);
         $show = $Page->show();
+
+
         //获取订单列表
         $orderList = $orderLogic->getOrderList($condition,$sort_order,$Page->firstRow,$Page->listRows);
         $this->assign('orderList',$orderList);
