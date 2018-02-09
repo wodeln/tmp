@@ -112,7 +112,7 @@ class Cart extends MobileBase {
         $item_id = input("item_id/d"); // 商品规格id
         $action = input("action"); // 行为
         if ($this->user_id == 0){
-            $this->error('请先登录', U('Home/User/login'));
+            $this->error('请先登录', U('Mobile/User/login'));
         }
         $address_id = I('address_id/d');
         if($address_id){
@@ -506,7 +506,7 @@ class Cart extends MobileBase {
         }
         $pre_sell_info = M('goods_activity')->where(array('act_id' => $act_id, 'act_type' => 1))->find();
         if(empty($pre_sell_info)){
-            $this->error('商品不存在或已下架',U('Home/Activity/pre_sell_list'));
+            $this->error('商品不存在或已下架',U('Mobile/Activity/pre_sell_list'));
         }
         $pre_sell_info = array_merge($pre_sell_info, unserialize($pre_sell_info['ext_info']));
         if ($pre_sell_info['act_count'] + $goods_num > $pre_sell_info['restrict_amount']) {
