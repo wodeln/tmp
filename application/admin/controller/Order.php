@@ -1203,7 +1203,7 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
         I("order_id") != '' ? $condition['order_id'] = str_replace("#","",I('order_id')) : false;
         I("order_sn") != '' ? $condition['order_sn'] = I('order_sn') : false;
         I("mobile") != '' ? $condition['mobile'] = I('mobile') : false;
-        $condition['order_id'] = 6;
+//        $condition['order_id'] = 6;
         if(!$condition){
             exit(json_encode(0));
         }
