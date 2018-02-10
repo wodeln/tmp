@@ -1,0 +1,200 @@
+<include file="public_mobile/header" title="确认订单" body="pore_add"/>
+<include file="public_mobile/header_nav" title="确认订单" href="javascript:history.back(-1)"/>
+<style type="text/css">
+    .edita{
+        bottom: 0;
+        top:7rem;
+        position: center;
+        height: 4rem;
+    }
+    #ajax_return{
+        margin-top: 3rem;
+    }
+    .mypackeg .packeg .fl p{
+        width: 9rem;
+    }
+    .packeg .fl,.packeg .fr span {
+        line-height: 1.5rem;
+    }
+    .form-style{
+        width: 100%;
+        height: 1.3rem;
+        line-height: 1.3rem;
+        padding-left: 0.2rem;
+    }
+    .w10{
+        width: 100%;
+    }
+    /*{
+        line-height: 1.5rem;
+    }*/
+</style>
+<div class="floor my p edit">
+    <form action="{:U('Mobile/Check/get_order_detail')}" method="post" id="order_info">
+        <div class="content">
+            <div class="floor list7">
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="javascript:void(0)">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>订单ID:</span>
+                                </div>
+                                <div class="fl">
+                                    <input type="text" value="" name="order_id" placeholder="例如：#103"/>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="javascript:void(0)">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>订单号:</span>
+                                </div>
+                                <div class="fl">
+                                    <input type="tel" value="" name="order_sn" placeholder="例如：201802091054306405"/>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="javascript:void(0)">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>联系电话:</span>
+                                </div>
+                                <div class="fl">
+                                    <input type="text" value="" name="mobile"/>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edita">
+                <div class="content30">
+                    <input type="button" value="查看订单" class="dotm_btn1 beett" onclick="get_orders()"/>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="ajax_return">
+            <!--<div class="mypackeg ma-to-20 getmore" id="order6">
+                <div class="packeg p">
+                    <div class="maleri30">
+                        <div class="fl">
+                            <p class="bgnum"><span>订单编号:</span><span>201802091437407461</span></p>
+                        </div>
+                        <div class="fr">
+                            <span>电话：15021464551</span>
+                        </div>
+
+                        <div class="fl">
+                            <p class="bgnum"><span>订单ID:</span><span>#6</span></p>
+                        </div>
+                        <div class="fr">
+                            <span class="red">￥148.00</span>
+                        </div>
+                    </div>
+
+                    <div class="maleri30">
+                        <div class="fl" style="width: 100%">
+                            &lt;!&ndash;<span class="red">￥148.00</span><span class="threel">共0件</span>&ndash;&gt;
+                            <p style="width: 100%">
+                                <span style="width: 100%">
+                                    <select name="pay_name" class="form-style" id="pay_name6">
+                                        <option value="">请选择支付方式</option>
+                                        <option value="1">支付宝</option>
+                                        <option value="2">微信</option>
+                                    </select>
+                                </span>
+                            </p>
+                            <p style="width: 100%">
+                                <input name="pay_id" value="" id="pay_id6" class="form-style" placeholder="支付账号(必填)">
+                            </p>
+                            <p style="width: 100%">
+                                <input name="transaction_id" value="" id="transaction_id6" class="form-style" placeholder="支付流水账号(非必填)">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="maleri30">
+                        <div class="fl" style="font-size: 0.6rem;">
+                            订单状态：待支付
+                        </div>
+                        <div class="fr">
+                            <a class="shop-rebuy paysoon" onclick="confirm_order(6)">确认订单</a>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </form>
+</div>
+
+</body>
+<script type="text/javascript">
+    function get_orders() {
+        $.ajax({
+            type:"POST",
+            url:"/index.php/Admin/Order/get_order_detail",//+tab,
+            data:$('#order_info').serialize(),
+            success: function(data){
+               if(data==0){
+                   layer.open({content:"别闹，好好填信息！",time:3});
+               }else {
+                   $("#ajax_return").html('');
+                   $("#ajax_return").append(data);
+               }
+
+            }
+        });
+    }
+
+    function confirm_order(orderId) {
+        var payId = "pay_id"+orderId;
+        var transactionId = "transaction_id"+orderId;
+        var payName = "pay_name"+orderId;
+        var orderDivId = "order"+orderId;
+
+
+        if($('#'+payName).val() == ''){
+            layer.open({content:"请选择支付方式！",time:3});
+            return false;
+        }
+
+        if($('#'+payId).val() == ''){
+            layer.open({content:"请填写支付账号！",time:3});
+            $('#'+payId).focus();
+            return false;
+        }
+
+
+        $.ajax({
+            type:"POST",
+            url:"/index.php/Admin/Order/confirm_order_mobile",//+tab,
+            data:{
+                pay_id: $('#'+payId).val(),
+                pay_name: $('#'+payName).find("option:selected").text(),
+                order_id: orderId
+            },
+            dataType:'json',
+            success: function(data){
+                console.log(data);
+                if(data.status==0){
+                    layer.open({content:data["message"],time:3});
+                }else{
+                    layer.open({content:"操作成功，请继续",time:3});
+                    $("#"+orderDivId).remove();
+                }
+            }
+        });
+    }
+</script>
+</html>

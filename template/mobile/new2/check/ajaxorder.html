@@ -1,0 +1,26 @@
+<volist name="lists" id="list">
+    <div class="mypackeg ma-to-20 getmore">
+        <div class="packeg p">
+            <div class="maleri30">
+                <div class="fl">
+                    <h1><span></span><span class="bgnum"></span></h1>
+                    <p class="bgnum"><span>订单编号:</span><span>{$list.order_sn}</span></p>
+                </div>
+                <div class="fr">
+                    <span>{$list['order_status_desc']}</span>
+                </div>
+            </div>
+        </div>
+        <div class="shop-rebuy-price p">
+            <div class="maleri30">
+                <span class="price-alln">
+                    <!--<span class="red">￥{$list['order_amount']}</span><span class="threel">共{$list.goods_list|count}件</span>-->
+                    <span class="red">￥{$list['order_amount']}</span><span class="threel" id="goodsnum">共{$list.count_goods_num}件</span>
+                </span>
+                <if condition="$list.pay_btn eq 1">
+                    <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">立即付款</a>
+                </if>
+            </div>
+        </div>
+    </div>
+</volist>

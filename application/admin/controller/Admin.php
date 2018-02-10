@@ -164,6 +164,44 @@ class Admin extends Base {
         
        return $this->fetch();
     }
+
+    /*
+     * 移动端管理员登陆
+     */
+    public function login_mobile(){
+        if(session('?admin_id') && session('admin_id')>0){
+            $this->error("您已登录",U('Admin/Order/check_order'));
+        }
+
+        if(IS_POST){
+            $verify = new Verify();
+            if (!$verify->check(I('post.vertify'), "admin_login")) {
+                exit(json_encode(array('status'=>0,'msg'=>'验证码错误')));
+            }
+            $condition['user_name'] = I('post.username/s');
+            $condition['password'] = I('post.password/s');
+            if(!empty($condition['user_name']) && !empty($condition['password'])){
+                $condition['password'] = encrypt($condition['password']);
+                $admin_info = M('admin')->join(PREFIX.'admin_role', PREFIX.'admin.role_id='.PREFIX.'admin_role.role_id','INNER')->where($condition)->find();
+                if(is_array($admin_info)){
+                    session('admin_id',$admin_info['admin_id']);
+                    session('act_list',$admin_info['act_list']);
+                    M('admin')->where("admin_id = ".$admin_info['admin_id'])->save(array('last_login'=>time(),'last_ip'=>  request()->ip()));
+                    session('last_login_time',$admin_info['last_login']);
+                    session('last_login_ip',$admin_info['last_ip']);
+                    adminLog('后台登录');
+                    $url = session('from_url') ? session('from_url') : U('Admin/Order/check_order');
+                    exit(json_encode(array('status'=>1,'url'=>$url)));
+                }else{
+                    exit(json_encode(array('status'=>0,'msg'=>'账号密码不正确')));
+                }
+            }else{
+                exit(json_encode(array('status'=>0,'msg'=>'请填写账号密码')));
+            }
+        }
+
+        return $this->fetch();
+    }
     
     /**
      * 退出登陆

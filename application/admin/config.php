@@ -20,6 +20,7 @@ return [
     ],
     'view_replace_str' => [
         '__PUBLIC__' => '/public',
+        '__STATIC__' => '/template/mobile/new2/static',
         '__ROOT__' => ''
         // '__STATIC__' => '/template/pc/default/Static',
     ],

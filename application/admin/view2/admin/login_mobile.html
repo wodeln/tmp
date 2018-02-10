@@ -1,0 +1,138 @@
+<include file="public_mobile/header" title="管理员登录"  body=""/>
+<include file="public_mobile/header_nav" title="管理员登录"  href="javascript:history.back(-1);"/>
+
+<div class="loginsingup-input">
+    <!--登录表单-s-->
+    <form action="" name='theForm' id="theForm" method="post">
+        <input type="hidden" name="referurl" id="referurl" value="{$referurl}">
+        <div class="lsu">
+            <span class="ico ico-username"></span>
+            <input type="text" name="username" autocomplete="off" class="input-text" value="" placeholder="用户名" />
+        </div>
+        <div class="lsu">
+            <span class="ico ico-password"></span>
+            <input type="password" name="password" autocomplete="off" class="input-text" value="" placeholder="密  码" />
+        </div>
+
+        <div class="lsu">
+            <span class="ico ico-v-code"></span>
+            <input class="v-code-input" type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码"/>
+            <img class="v-code-pic"  id="imgVerify" src="{:U('Admin/vertify')}" onClick="fleshVerify()"/>
+        </div>
+
+        <div class="lsu-submit">
+            <input type="button" name="submit" value="登 录"  class="btn_big1 sub"  />
+        </div>
+        <div id="error" style="position: absolute;left:0px;bottom: 12px;text-align: center;width:441px;">
+
+        </div>
+    </form>
+
+<!--登录表单-e-->
+</div>
+
+
+<script type="text/javascript">
+
+    $(function(){
+        $(".formText .input-text").focus(function(){
+            $(this).parent().addClass("focus");
+        });
+
+        $(".formText .input-text").blur(function(){
+            $(this).parent().removeClass("focus");
+        });
+
+        $(".checkbox").click(function(){
+            if($(this).hasClass("checked")){
+                $(this).removeClass("checked");
+                $('input[name=remember]').val(0);
+            }else{
+                $(this).addClass("checked");
+                $('input[name=remember]').val(1);
+            }
+        });
+
+        $(".formText .input-yzm").focus(function(){
+            $(this).prev().show();
+        });
+
+        $(".formText").blur(function(){
+            $(this).prev().hide();
+        });
+    });
+
+    $(function(){
+       /* $('.lsu-submit .sub').on('click',function(){
+            $('.code').show();
+        });*/
+        $('#theForm input[name=submit]').on('click',function(){
+            var username=true;
+            var password=true;
+            var vertify=true;
+
+            if($('#theForm input[name=username]').val() == ''){
+                layer.open({content:"用户名不能为空！",time:3});
+                $('#theForm input[name=username]').focus();
+                username = false;
+                return false;
+            }
+
+            if($('#theForm input[name=password]').val() == ''){
+                layer.open({content:"密码不能为空！",time:3});
+                $('#theForm input[name=password]').focus();
+                password = false;
+                return false;
+            }
+
+            if($('#theForm input[name=vertify]').val() == ''){
+                layer.open({content:"验证码不能为空！",time:3});
+                $('#theForm input[name=vertify]').focus();
+                vertify = false;
+                return false;
+            }
+
+            if(vertify && $('#theForm input[name=username]').val() != '' && $('#theForm input[name=password]').val() != ''){
+                $.ajax({
+                    async:false,
+                    url:'/index.php?m=Admin&c=Admin&a=login_mobile&t='+Math.random(),
+                    data:{
+                        'username':$('#theForm input[name=username]').val(),
+                        'password':$('#theForm input[name=password]').val(),
+                        vertify:$('#theForm input[name=verify_code]').val()
+                    },
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        if(res.status != 1){
+                            layer.open({content:res.msg,time:3});
+                            fleshVerify();
+                            username=false;
+                            password=false;
+                            return false;
+                        }else{
+                            top.location.href = res.url;
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        layer.open({content:"网络失败，请刷新页面后重试!",time:3});
+                    }
+                });
+            }else{
+                return false;
+            }
+        });
+
+        $(document).click(function(e){
+            if(e.target.name !='vertify' && !$(e.target).parents("div").is(".submitDiv")){
+                $('.code').hide();
+            }
+        });
+    });
+
+    function fleshVerify(){
+        $('#imgVerify').attr('src','/index.php?m=Admin&c=Admin&a=vertify&r='+Math.floor(Math.random()*100));//重载验证码
+    }
+</script>
+</body>
+</html>

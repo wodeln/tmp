@@ -1,0 +1,70 @@
+<volist name="lists" id="list">
+    <div class="mypackeg ma-to-20 getmore" id="order{$list.order_id}">
+        <div class="packeg p">
+            <div class="maleri30">
+                <div class="fl">
+                    <p class="bgnum"><span>订单编号:</span><span>{$list.order_sn}</span></p>
+                </div>
+                <div class="fr">
+                    <span>电话：{$list.mobile}</span>
+                </div>
+
+                <div class="fl">
+                    <p class="bgnum"><span>订单ID:</span><span>#{$list.order_id}</span></p>
+                </div>
+                <div class="fr">
+                    <span class="red">￥{$list.order_amount}</span>
+                </div>
+            </div>
+
+            <div class="maleri30">
+                <div class="fl" style="width: 100%">
+                    <!--<span class="red">￥148.00</span><span class="threel">共0件</span>-->
+                    <p style="width: 100%">
+                                <span style="width: 100%">
+                                    <select name="pay_name" class="form-style" id="pay_name{$list.order_id}">
+                                        <option value="">请选择支付方式</option>
+                                        <option value="1">支付宝</option>
+                                        <option value="2">微信</option>
+                                    </select>
+                                </span>
+                    </p>
+                    <p style="width: 100%">
+                        <input name="pay_id" value="" id="pay_id{$list.order_id}" class="form-style" placeholder="支付账号(必填)">
+                    </p>
+                    <p style="width: 100%">
+                        <input name="transaction_id" value="" id="transaction_id{$list.order_id}" class="form-style" placeholder="支付流水账号(非必填)">
+                    </p>
+                </div>
+            </div>
+            <div class="maleri30">
+                <div class="fl" style="font-size: 0.6rem;">
+                    订单状态：
+                    <if condition="$list.pay_status eq 0">
+                        待支付
+                    <else />
+                        已支付
+                    </if>
+
+                    <if condition="$list.order_status eq 0">
+                        待确认
+                    <elseif condition="$list.order_status eq 1"/>
+                        已确认
+                        <if condition="$list.shipping_status eq 0">
+                            待发货
+                            <elseif condition="$list.order_status eq 1"/>
+                            已发货
+                        </if>
+                    <else />
+                        已收货
+                    </if>
+
+
+                </div>
+                <div class="fr">
+                    <a class="shop-rebuy paysoon" onclick="confirm_order({$list.order_id})">确认订单</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</volist>

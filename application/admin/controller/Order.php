@@ -1188,4 +1188,57 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
         $order_amount = M('order')->where("order_status=0 and (pay_status=1 or pay_code='cod')")->count();
         echo $order_amount;
     }
+
+    /**
+     * 移动端管理员确认订单
+     * @return mixed
+     */
+    public function check_order(){
+
+        return $this->fetch();
+    }
+
+    public function get_order_detail(){
+
+        I("order_id") != '' ? $condition['order_id'] = str_replace("#","",I('order_id')) : false;
+        I("order_sn") != '' ? $condition['order_sn'] = I('order_sn') : false;
+        I("mobile") != '' ? $condition['mobile'] = I('mobile') : false;
+        $condition['order_id'] = 6;
+        if(!$condition){
+            exit(json_encode(0));
+        }
+
+//        $condition['order_status'] = 0;
+        $orders = M("order")->where($condition)->select();
+
+        if(count($orders)==0){
+            exit(json_encode(0));
+        }
+        $this->assign("lists",$orders);
+//        print_r($orders);
+        return $this->fetch();
+    }
+
+    public function confirm_order_mobile(){
+        $payId = I("pay_id");
+        $payName = I("pay_name");
+        $orderId = I("order_id");
+
+        $res["status"] = 1;
+        if(!$payId || !$payName || !$orderId){
+            $res["status"] = 0;
+            $res["message"] = "别闹好不好，乖，把信息填全";
+        }else{
+            $data["pay_id"] = $payId;
+            $data["pay_name"] = $payName;
+            $data["pay_status"] = 1;
+            $data['order_status'] = 1;
+            $r = M("order")->where("order_id=$orderId")->save($data);
+            if($r==0) {
+                $res["status"] = 0;
+                $res["message"] = "系统内部错误，请联系管理员";
+            }
+        }
+        $this->ajaxReturn($res);
+    }
 }
