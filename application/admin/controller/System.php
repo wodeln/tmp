@@ -53,7 +53,7 @@ class System extends Base
             $rewardCoupons = M("coupon")->where(array("id"=>array('in',$config["recommend_reward_value"])))->select();
             //推荐第一个订单完成优惠券
             $firstCoupons = M("coupon")->where(array("id"=>array('in',$config["recommend_firt_value"])))->select();
-            $sql = M("coupon")->getLastSql();
+
             foreach ($rewardCoupons as $k=>$v){
                 $rewardTagVaue[$k]["value"] = $v["id"];
                 $rewardTagVaue[$k]["text"] = $v["name"];
