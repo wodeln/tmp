@@ -48,6 +48,25 @@ class System extends Base
 			$this->assign('city',$city);
 			$this->assign('area',$area);
 		}
+		if($inc_type == 'distribut'){
+		    //推荐注册优惠券
+            $rewardCoupons = M("coupon")->where(array("id"=>array('in',$config["recommend_reward_value"])))->select();
+            //推荐第一个订单完成优惠券
+            $firstCoupons = M("coupon")->where(array("id"=>array('in',$config["recommend_firt_value"])))->select();
+            $sql = M("coupon")->getLastSql();
+            foreach ($rewardCoupons as $k=>$v){
+                $rewardTagVaue[$k]["value"] = $v["id"];
+                $rewardTagVaue[$k]["text"] = $v["name"];
+            }
+
+            foreach ($firstCoupons as $k=>$v){
+                $firstTagVaue[$k]["value"] = $v["id"];
+                $firstTagVaue[$k]["text"] = $v["name"];
+            }
+
+            $this->assign('first_tag',json_encode($firstTagVaue));
+            $this->assign('reward_tag',json_encode($rewardTagVaue));
+        }
 		$this->assign('config',$config);//当前配置项
                 //C('TOKEN_ON',false);
 		return $this->fetch($inc_type);

@@ -391,6 +391,25 @@ class Promotion extends Base
         return $this->fetch($tpl);
     }
 
+    public function search_coupons()
+    {
+        $keywords = input('keywords');
+        $tpl = input('tpl', 'search_coupons');
+        $where = ['type' => 1, 'status'=>1];
+        $inputId = I("input_id");
+        if($keywords){
+            $where['name'] = ['like','%'.$keywords.'%'];
+        }
+        $count = M("coupon")->where($where)->count();
+        $Page = new Page($count, 10);
+        $coupons = M("coupon")->where($where)->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $this->assign("list",$coupons);
+        $this->assign('page', $Page);
+        $this->assign('input_id', $inputId);
+        $this->assign('coupons',C('COUPON_TYPE'));
+        return $this->fetch($tpl);
+    }
+
     //限时抢购
     public function flash_sale()
     {

@@ -1,4 +1,25 @@
 <include file="public/layout" />
+<link href="__PUBLIC__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .label-info {
+        background-color: #5bc0de;
+    }
+    .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+    .bootstrap-tagsinput{
+        min-width: 200px;
+    }
+</style>
 <body style="background-color: #FFF; overflow: auto;">
 <div id="append_parent"></div>
 <div id="ajaxwaitid"></div>
@@ -41,6 +62,39 @@
                 </dd>
             </dl>
             <div id="switch_on_off" <if condition="$config['switch'] eq 0">style="display: none;"</if>>
+
+            <dl class="row">
+                <dt class="tit">推荐注册优惠券发放</dt>
+                <dd class="opt">
+                    <div class="onoff pull-left">
+                        <label for="recommend_reward1" class="cb-enable  <if condition="$config['recommend_reward'] eq 1">selected</if>">开启</label>
+                        <label for="recommend_reward0" class="cb-disable <if condition="$config['recommend_reward'] eq 0">selected</if>">关闭</label>
+                        <input type="radio"  id="recommend_reward1"  name="recommend_reward" value="1" <if condition="$config['recommend_reward'] eq 1">checked="checked"</if>>
+                        <input type="radio"  id="recommend_reward0" name="recommend_reward" value="0" <if condition="$config['recommend_reward'] eq 0">checked="checked"</if> >
+                    </div>
+                    <div class="pull-left" style="margin-left: 2rem;">
+                        <input value="选择优惠券" class="input-btn" onclick="select_coupon('recommend_reward_value')" type="button">
+                        <input id="recommend_reward_value" type="text" name="recommend_reward_value" value=""/>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">推荐注册后首单优惠券发放</dt>
+                <dd class="opt">
+                    <div class="onoff pull-left">
+                        <label for="recommend_firt_order1" class="cb-enable  <if condition="$config['recommend_firt_order'] eq 1">selected</if>">开启</label>
+                        <label for="recommend_firt_order0" class="cb-disable <if condition="$config['recommend_firt_order'] eq 0">selected</if>">关闭</label>
+                        <input type="radio" id="recommend_firt_order1"  name="recommend_firt_order" value="1" <if condition="$config['recommend_firt_order'] eq 1">checked="checked"</if>>
+                        <input type="radio" id="recommend_firt_order0" name="recommend_firt_order" value="0" <if condition="$config['recommend_firt_order'] eq 0">checked="checked"</if> >
+                    </div>
+                    <div class="pull-left" style="margin-left: 2rem;">
+                        <input value="选择优惠券" class="input-btn" onclick="select_coupon('recommend_firt_value')" type="button">
+                        <input id="recommend_firt_value" type="text" name="recommend_firt_value" value=""/>
+
+                    </div>
+                </dd>
+            </dl>
+
             <dl class="row">
                 <dt class="tit">
                     <label>成为分销商条件</label>
@@ -207,18 +261,50 @@
             </div>
             <div class="bot">
                 <input type="hidden" name="inc_type" value="{$inc_type}">
+                <input type="hidden" id="first_tag" value='{$first_tag}'>
+                <input type="hidden" id="reward_tag" value='{$reward_tag}'>
                 <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
             </div>
         </div>
     </form>
 </div>
 <div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script src="__PUBLIC__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js" type="text/javascript"></script>
 <script>
     $('#distribut_pattern').change(function(){
         if($(this).val() == 1)
             $('#distribut_order_rate').show();
         else
             $('#distribut_order_rate').hide();
+    });
+
+    $(function () {
+        var elt = $("#recommend_firt_value");
+
+        var elt1 = $("#recommend_reward_value");
+        elt1.tagsinput({
+            itemValue: 'value',
+            itemText: 'text'
+        });
+
+        elt.tagsinput({
+            itemValue: 'value',
+            itemText: 'text'
+        });
+
+        // var first_tag = $("#first_tag").val();
+        var first_tag = {$first_tag};
+        var reward_tag = {$reward_tag};
+        debugger
+        $.each(first_tag, function (index, item) {
+            elt.tagsinput('add',item);
+        });
+        $.each(reward_tag, function (index1, item1) {
+            elt1.tagsinput('add',item1);
+        });
+        // debugger
+
+        // elt1.tagsinput('add',);
     });
 
     function adsubmit(){
@@ -236,7 +322,44 @@
 
         $('#handlepost').submit();
     }
-    
+
+    function select_coupon(inputId){
+        // use_type_tab(1);
+        var url = '/index.php?m=admin&c=Promotion&a=search_coupons&input_id='+inputId+'&t='+Math.random();
+        layer.open({
+            type: 2,
+            title: '选择优惠券',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['70%', '80%'],
+            content: url,
+        });
+    }
+
+    function call_back(){
+        // console.log(couponsArr);
+        layer.closeAll('iframe');
+    }
+
+    function removeAll(inputId) {
+        var elt = $("#"+inputId);
+        elt.tagsinput({
+            itemValue: 'value',
+            itemText: 'text'
+        });
+        elt.tagsinput('removeAll');
+    }
+
+    function add_item(couponsItem,inputId) {
+        var elt = $("#"+inputId);
+        elt.tagsinput({
+            itemValue: 'value',
+            itemText: 'text'
+        });
+
+        elt.tagsinput('add', couponsItem);
+    }
+
     function qr_back_call_back(fileurl_tmp)
     {
       $("#qr_back").val(fileurl_tmp);
