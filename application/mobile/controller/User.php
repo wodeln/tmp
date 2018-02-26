@@ -232,7 +232,6 @@ class User extends MobileBase
         }
         $reg_sms_enable = tpCache('sms.regis_sms_enable');
         $reg_smtp_enable = tpCache('sms.regis_smtp_enable');
-
         if (IS_POST) {
             $logic = new UsersLogic();
             //验证码检验
@@ -307,6 +306,7 @@ class User extends MobileBase
         $this->assign('regis_smtp_enable',$reg_smtp_enable); // 注册启用邮箱：
         $sms_time_out = tpCache('sms.sms_time_out')>0 ? tpCache('sms.sms_time_out') : 120;
         $this->assign('sms_time_out', $sms_time_out); // 手机短信超时时间
+        if(I("first_leader")) $this->assign('first_leader', I("first_leader"));
         return $this->fetch();
     }
 

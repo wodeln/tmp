@@ -382,6 +382,7 @@ class UsersLogic extends Model
 			$map['first_leader'] = 0;
 		}
 		if(is_array($invite) && !empty($invite)){
+
 			$map['first_leader'] = $invite['user_id'];
 			$map['second_leader'] = $invite['first_leader'];
 			$map['third_leader'] = $invite['second_leader'];
@@ -405,6 +406,16 @@ class UsersLogic extends Model
         $pay_points = tpCache('basic.reg_integral'); // 会员注册赠送积分
         if($pay_points > 0){
             accountLog($user_id, 0,$pay_points, '会员注册赠送积分'); // 记录日志流水
+        }
+        //推荐注册发放优惠券
+        $config = tpCache("distribut");
+        if($config["recommend_reward"] && is_array($invite) && !empty($invite)){
+            $couponIds = explode(",",$config["recommend_reward_value"]);
+            foreach ($couponIds as $k=>$v){
+                $insert[] = ['cid' => $v, 'type' => 3, 'uid' => $invite['user_id'], 'send_time' => time()];
+                M('coupon')->where("id",$v)->setInc('send_num',1);
+            }
+            M("coupon_list")->insertAll($insert);
         }
         $user = M('users')->where("user_id", $user_id)->find();
         return array('status'=>1,'msg'=>'注册成功','result'=>$user);

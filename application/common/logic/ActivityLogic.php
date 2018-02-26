@@ -139,7 +139,7 @@ class ActivityLogic extends Model
             // 未使用
             $where['l.order_id'] = 0;
             $where['c.use_end_time'] = array('gt', time());
-            $where['c.status'] = 0;
+            $where['c.status'] = 1;
         } elseif ($type == 1) {
             //已使用
             $where['l.order_id'] = array('gt', 0);
