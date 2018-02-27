@@ -169,6 +169,22 @@
                             </a>
                         </div>
                     </div>-->
+
+                    <!--<div class="myorder p">
+                        <div class="content30">
+                            <a href="{:U('Mobile/Distribut/index')}">
+                                <div class="order">
+                                    <div class="fl">
+                                        <img src="__STATIC__/images/w1.png"/>
+                                        <span>我的推广码</span>
+                                    </div>
+                                    <div class="fr">
+                                        <i class="Mright"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>-->
                 </if>
                 <!--<div class="myorder p">
                     <div class="content30">
@@ -291,6 +307,21 @@
                     </div>
                 </div>
 
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="javascript:void(0);" onclick="show_qrcode();">
+                            <div class="order">
+                                <div class="fl">
+                                    <img src="__STATIC__/images/w1.png"/>
+                                    <span>我的推广码</span>
+                                </div>
+                                <div class="fr">
+                                    <i class="Mright"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
                 <!--
                 <div class="myorder p">
                     <div class="content30">
@@ -362,9 +393,26 @@
         </div>
     </div>
 
+<div style="display: none;">
+    <div id="qrcode"></div>
+</div>
+<input type="hidden" value="{$host}{:U('Mobile/User/reg',array('first_leader'=>$user['mobile']))}" id="url" />
+
     <!--底部导航-start-->
     <include file="public/footer_nav"/>
     <!--底部导航-end-->
-    <script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/qrcode.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        var url = $("#url").val();
+        var qrcode = new QRCode("qrcode", {
+            text: url,
+            correctLevel : QRCode.CorrectLevel.H
+        });
+        function show_qrcode() {
+            var img = $("#qrcode").children("img")[0];
+            var i = $(img).attr("src");
+            layer.open({content: "<img src='"+i+"'>", time: 0});
+        }
+    </script>
 </body>
 </html>

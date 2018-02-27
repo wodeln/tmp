@@ -430,7 +430,7 @@
         <div class="maleri30">
             <div class="invoice list7">
                 <div class="myorder p">
-                    <div class="content30 coupon_click">
+                    <div class="content30 coupon_click" onclick="show_coupon();">
                         <div class="order">
                             <div class="fl">
                                 <span>优惠券</span>
@@ -744,7 +744,7 @@
     })
 
     //优惠券
-    $(function(){
+    /*$(function(){
         $(document).on('click','.coupon_click',function(){
             cover();
             $('.coupongg').show();
@@ -757,8 +757,25 @@
                 $('.no_get_coupon').show();
                 $('.soldout_cp').hide();
             }
+            // alert(11);
+            alert("document on 监听");
         })
-    })
+    })*/
+
+
+    function show_coupon() {
+        cover();
+        $('.coupongg').show();
+        $('html,body').addClass('ovfHiden');
+        var coupon_length = {:count($userCartCouponList)};
+        if(coupon_length == 0){
+            $('.soldout_cp').show();
+            $('.no_get_coupon').hide();
+        }else{
+            $('.no_get_coupon').show();
+            $('.soldout_cp').hide();
+        }
+    }
 
     //关闭优惠券弹窗
     function closer(){
