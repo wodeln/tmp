@@ -1237,6 +1237,10 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
             if($r==0) {
                 $res["status"] = 0;
                 $res["message"] = "系统内部错误，请联系管理员";
+            }else{
+                //首单发放优惠券
+                $orderLogic = new OrderLogic();
+                $orderLogic->sendCoupon($orderId);
             }
         }
         $this->ajaxReturn($res);

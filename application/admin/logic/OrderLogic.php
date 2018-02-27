@@ -184,7 +184,8 @@ class OrderLogic extends Model
     		case 'pay': //付款
                	$order_sn = M('order')->where("order_id = $order_id")->getField("order_sn");
                 update_pay_status($order_sn,$ext); // 调用确认收货按钮
-    			return true;    			
+                $this->sendCoupon($order_id);
+    			return true;
     		case 'pay_cancel': //取消付款
     			$updata['pay_status'] = 0;
     			$this->order_pay_cancel($order_id);
@@ -444,5 +445,20 @@ class OrderLogic extends Model
     		}
     	}
     	return $return_goods['refund_money'];
+    }
+
+    public function sendCoupon($order_id){
+        $config = tpCache("distribut");
+        $userId = M("order")->where(array("order_id"=>$order_id))->getField("user_id");
+        $count = M("order")->where(array("user_id"=>$userId))->count();
+        $userInfo = M("users")->where(array("user_id"=>$userId))->find();
+        if($config["recommend_firt_order"] && $userInfo["first_leader"] && $count==1){
+            $couponIds = explode(",",$config["recommend_firt_value"]);
+            foreach ($couponIds as $k=>$v){
+                $insert[] = ['cid' => $v, 'type' => 3, 'uid' => $userInfo['first_leader'], 'send_time' => time()];
+                M('coupon')->where("id",$v)->setInc('send_num',1);
+            }
+            M("coupon_list")->insertAll($insert);
+        }
     }
 }
