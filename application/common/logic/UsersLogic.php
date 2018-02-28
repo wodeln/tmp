@@ -418,6 +418,14 @@ class UsersLogic extends Model
             M("coupon_list")->insertAll($insert);
         }
         $user = M('users')->where("user_id", $user_id)->find();
+        if($config["reg_coupon"]){
+            $couponIds = explode(",",$config["reg_coupon_value"]);
+            foreach ($couponIds as $k=>$v){
+                $insert[] = ['cid' => $v, 'type' => 3, 'uid' => $user['user_id'], 'send_time' => time()];
+                M('coupon')->where("id",$v)->setInc('send_num',1);
+            }
+            M("coupon_list")->insertAll($insert);
+        }
         return array('status'=>1,'msg'=>'注册成功','result'=>$user);
     }
 

@@ -80,6 +80,8 @@ class User extends MobileBase
         //获取用户信息的数量
         $messageLogic = new MessageLogic();
         $user_message_count = $messageLogic->getUserMessageCount();
+        $host = "http://".$_SERVER['HTTP_HOST'];
+        $this->assign('host', $host);
         $this->assign('user_message_count', $user_message_count);
         $this->assign('level_name', $level_name);
         $this->assign('comment_count', $comment_count);

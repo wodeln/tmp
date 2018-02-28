@@ -96,6 +96,23 @@
             </dl>
 
             <dl class="row">
+                <dt class="tit">注册发放优惠券</dt>
+                <dd class="opt">
+                    <div class="onoff pull-left">
+                        <label for="reg_coupon1" class="cb-enable  <if condition="$config['reg_coupon'] eq 1">selected</if>">开启</label>
+                        <label for="reg_coupon0" class="cb-disable <if condition="$config['reg_coupon'] eq 0">selected</if>">关闭</label>
+                        <input type="radio" id="reg_coupon1"  name="reg_coupon" value="1" <if condition="$config['reg_coupon'] eq 1">checked="checked"</if>>
+                        <input type="radio" id="reg_coupon0" name="reg_coupon" value="0" <if condition="$config['reg_coupon'] eq 0">checked="checked"</if> >
+                    </div>
+                    <div class="pull-left" style="margin-left: 2rem;">
+                        <input value="选择优惠券" class="input-btn" onclick="select_coupon('reg_coupon_value')" type="button">
+                        <input id="reg_coupon_value" type="text" name="reg_coupon_value" value=""/>
+
+                    </div>
+                </dd>
+            </dl>
+
+            <dl class="row">
                 <dt class="tit">
                     <label>成为分销商条件</label>
                 </dt>
@@ -282,6 +299,8 @@
         var elt = $("#recommend_firt_value");
 
         var elt1 = $("#recommend_reward_value");
+
+        var elt2 = $("#reg_coupon_value");
         elt1.tagsinput({
             itemValue: 'value',
             itemText: 'text'
@@ -292,15 +311,24 @@
             itemText: 'text'
         });
 
+        elt2.tagsinput({
+            itemValue: 'value',
+            itemText: 'text'
+        });
+
+
         // var first_tag = $("#first_tag").val();
         var first_tag = {$first_tag};
         var reward_tag = {$reward_tag};
-        debugger
+        var reg_tag = {$reg_tag};
         $.each(first_tag, function (index, item) {
             elt.tagsinput('add',item);
         });
         $.each(reward_tag, function (index1, item1) {
             elt1.tagsinput('add',item1);
+        });
+        $.each(reg_tag, function (index1, item1) {
+            elt2.tagsinput('add',item1);
         });
         // debugger
 

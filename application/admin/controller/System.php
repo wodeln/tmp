@@ -53,6 +53,8 @@ class System extends Base
             $rewardCoupons = M("coupon")->where(array("id"=>array('in',$config["recommend_reward_value"])))->select();
             //推荐第一个订单完成优惠券
             $firstCoupons = M("coupon")->where(array("id"=>array('in',$config["recommend_firt_value"])))->select();
+            //注册发放优惠券
+            $regCoupons = M("coupon")->where(array("id"=>array('in',$config["reg_coupon_value"])))->select();
 
             foreach ($rewardCoupons as $k=>$v){
                 $rewardTagVaue[$k]["value"] = $v["id"];
@@ -64,8 +66,14 @@ class System extends Base
                 $firstTagVaue[$k]["text"] = $v["name"];
             }
 
+            foreach ($regCoupons as $k=>$v){
+                $regCoupons[$k]["value"] = $v["id"];
+                $regCoupons[$k]["text"] = $v["name"];
+            }
+
             $this->assign('first_tag',json_encode($firstTagVaue));
             $this->assign('reward_tag',json_encode($rewardTagVaue));
+            $this->assign('reg_tag',json_encode($regCoupons));
         }
 		$this->assign('config',$config);//当前配置项
                 //C('TOKEN_ON',false);
