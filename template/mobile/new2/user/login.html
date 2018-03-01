@@ -23,7 +23,7 @@
                 <span class="ico ico-v-code"></span>
                 <input class="v-code-input" type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码"/>
                 <img class="v-code-pic"  id="verify_code_img" src="{:U('Mobile/User/verify')}" onClick="verify()"/>
-            </div>
+            </div>-->
             </notempty>
         <div class="lsu-submit">
             <input type="button"  value="登 录"  onclick="submitverify()" class="btn_big1"  />
@@ -113,11 +113,11 @@
                     }
                 }else{
                     showErrorMsg(data.msg);
-                    if (codeExist) {
+                    /*if (codeExist) {
                         verify();
                     } else {
                         location.reload();
-                    }
+                    }*/
                 }
             },
             error : function(XMLHttpRequest, textStatus, errorThrown) {
