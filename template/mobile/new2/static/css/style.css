@@ -1326,7 +1326,8 @@ footer .flool3 p {
 
 .classlist .fr .branchList .tp-class-list ul {
     margin-top: .384rem;
-    background-color: #fff
+    background-color: #fff;
+    margin-bottom: .384rem;
 }
 
 .classlist .fr .branchList .tp-class-list ul li {
