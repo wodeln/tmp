@@ -79,6 +79,7 @@ return	array(
 					array('name' => '发票管理','act'=>'index', 'op'=>'Invoice'),
 			        array('name' => '拼团列表','act'=>'team_list','op'=>'Team'),
 			        array('name' => '拼团订单','act'=>'order_list','op'=>'Team'),
+			        array('name' => '销售产品统计','act'=>'goods_count','op'=>'Order'),
 			)),
 			array('name' => '促销','child' => array(
 					array('name' => '抢购管理', 'act'=>'flash_sale', 'op'=>'Promotion'),
