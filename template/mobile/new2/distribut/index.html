@@ -1,0 +1,49 @@
+<include file="public/header" title="我的推广码" body="f3"/>
+<include file="public/header_nav" title="我的推广码" href="{:U('/Mobile/User/index')}"/>
+<style>
+    #qrcode{
+        text-align: center;
+        display: table-cell;
+        margin: 0 auto;
+        vertical-align:middle;
+        position: relative;
+    }
+</style>
+<div class="pjiscion p after-set-li">
+    <!--<ul>
+        <a href="{:U('Mobile/Order/comment',array('status'=>-1))}">
+            <li class="red">
+                <p>推荐二维码</p><p></p>
+            </li>
+        </a>
+        <a href="" >
+            <li>
+                <p>我的推荐</p><p></p>
+            </li>
+        </a>
+        <a href="">
+            <li>
+                <p>推荐订单</p><p></p>
+            </li>
+        </a>
+    </ul>-->
+</div>
+<div class="quedbox bg_white">
+    <!--<div class="sonfbst">-->
+        <!--<div class="maleri30">-->
+            <!--<span><i class="fbs"></i>立即发表评价晒图，最多可获得50积分</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div style="width: 256px;height: 256px; margin: 0 auto;">
+        <div id="qrcode"></div>
+    </div>
+    <input type="hidden" value="{$host}{:U('Mobile/User/reg',array('first_leader'=>$user['mobile']))}" id="url" />
+</div>
+<script type="text/javascript" src="__STATIC__/js/qrcode.js"></script>
+<script type="text/javascript">
+    var url = $("#url").val();
+    new QRCode(document.getElementById("qrcode"), url);  // 设置要生成二维码的链接
+
+</script>
+</body>
+</html>

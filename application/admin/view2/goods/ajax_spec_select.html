@@ -94,6 +94,11 @@ function ajaxGetSpecInput2(spec_arr)
 			success:function(data){                            
 				   $("#goods_spec_table2").html('')
 				   $("#goods_spec_table2").append(data);
+				   $(".spec_price").each(function (i,e) {
+                       if($(e).val()==0){
+                           $(e).val($("input[name='shop_price']").val());
+                       }
+                   })
 				   hbdyg();  // 合并单元格
 			}
 	});

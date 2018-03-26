@@ -32,6 +32,7 @@ class User extends MobileBase
     /*
     * 初始化操作
     */
+
     public function _initialize()
     {
         parent::_initialize();
@@ -51,7 +52,7 @@ class User extends MobileBase
         $is_bind_account = tpCache('basic.is_bind_account');
         if (!$this->user_id && !in_array(ACTION_NAME, $nologin)) {
             if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') && $is_bind_account){
-                header("location:" . U('Mobile/User/bind_guide'));//微信浏览器, 调到绑定账号引导页面
+                header("location:" . U('Mobile/User/login'));//微信浏览器, 调到绑定账号引导页面
             }else{
                 header("location:" . U('Mobile/User/login'));
             }
@@ -433,7 +434,7 @@ class User extends MobileBase
                 $this->ajaxReturn($data);
             }else{
                 $data['url']= U('/Mobile/User/address_list');
-                $this->success($data['msg'], U('/Mobile/User/address_list'));
+                $this->ajaxReturn($data);
             } 
             
         }

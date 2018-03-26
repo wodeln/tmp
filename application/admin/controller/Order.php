@@ -1245,4 +1245,56 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
         }
         $this->ajaxReturn($res);
     }
+
+    public function goods_count(){
+        $begin = date('Y-m-d',strtotime("-1 year"));//30天前
+        $end = date('Y/m/d',strtotime('+1 days'));
+        $this->assign('timegap',$begin.'-'.$end);
+        return $this->fetch();
+    }
+
+    /*
+     *Ajax首页
+     */
+    public function ajaxgoodscount(){
+        $orderLogic = new OrderLogic();
+        $timegap = I('timegap');
+        if($timegap){
+            $gap = explode('-', $timegap);
+            $begin = strtotime($gap[0]);
+            $end = strtotime($gap[1]);
+        }else{
+            //@new 新后台UI参数
+            $begin = strtotime(I('add_time_begin'));
+            $end = strtotime(I('add_time_end'));
+        }
+
+        // 搜索条件
+        $condition = array();
+        $keyType = I("keytype");
+        $keywords = I('keywords','','trim');
+
+        /*$consignee =  ($keyType && $keyType == 'consignee') ? $keywords : I('consignee','','trim');
+        $consignee ? $condition['consignee'] = trim($consignee) : false;*/
+
+        if($keyType == 'consignee' && $keywords!=""){
+            $condition['consignee|mobile|address'] = $keywords;
+//            $condition['consignee&mobile&address'] = array(array("lt","$keywords"),"$keywords","$keywords",'_multi'=>true);
+        }
+
+        if($begin && $end){
+            $condition['pay_time_start'] = $begin;
+            $condition['pay_time_end'] = $end;
+        }
+        $condition['order_prom_type'] = array('lt',5);
+
+        I('order_status') != '' ? $condition['order_status'] = I('order_status') : false;
+        I('pay_status') != '' ? $condition['pay_status'] = I('pay_status') : false;
+        I('shipping_status') != '' ? $condition['shipping_status'] = I('shipping_status') : false;
+
+        //获取订单列表
+        $orderList = $orderLogic->getGoodsCount($condition);
+        $this->assign('orderList',$orderList);
+        return $this->fetch();
+    }
 }

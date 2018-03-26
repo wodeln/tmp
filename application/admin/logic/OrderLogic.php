@@ -461,4 +461,19 @@ class OrderLogic extends Model
             M("coupon_list")->insertAll($insert);
         }
     }
+
+    public function getGoodsCount($condition){
+
+        $sql = "
+            SELECT * FROM tp_order_goods AS og
+            LEFT JOIN tp_order AS o ON og.order_id=o.order_id
+            LEFT JOIN tp_goods AS g ON og.goods_id=g.goods_id
+            WHERE (
+                o.pay_time >= 
+                AND o.pay_time <= 
+                ) 
+                AND g.suppliers_id = 1;
+        ";
+        return $this->query($sql);
+    }
 }
