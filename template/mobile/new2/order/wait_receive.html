@@ -16,8 +16,10 @@
                         <span class="red">{$order[order_status_desc]}</span>
                     </div>
                     <!--物流信息-s-->
+                    <a href="{:U('User/express',array('order_id'=>$order['order_id']))}">
                     <div class="wuliumess" id="wuliumess{$order.order_id}">
                         <if condition="$order.shipping_status gt 0">
+
                         <script>
                             queryExpress();
                             function queryExpress()
@@ -41,8 +43,10 @@
                                 });
                             }
                         </script>
+
                         </if>
                     </div>
+                    </a>
                     <!--物流信息-e-->
                 </div>
             </div>
