@@ -779,7 +779,7 @@ header .login a {
 }
 
 .advertisement .le .td img {
-    width: 6.82667rem
+    width: 7.82667rem
 }
 
 .advertisement .lefhe img {
@@ -835,8 +835,10 @@ div.index_hot {
 }
 
 .hotshop .hotsome .hottop .le img {
-    width: 6.82667rem;
-    height: 4.77867rem
+    border-radius: .42667rem;
+    width: 7.84667rem;
+    height: 4.77867rem;
+    padding: .21333rem;
 }
 
 .hotshop .hotsome .hottop .fl {
@@ -870,7 +872,8 @@ div.index_hot {
 .hotshop .hotsome .bloc .foura a img {
     width: 100%;
     max-height: 5.07733rem;
-    padding: .21333rem
+    padding: .21333rem;
+    border-radius: .32667rem;
 }
 
 .guesslike .likeshop {
