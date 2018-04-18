@@ -265,7 +265,6 @@ var _hmt = _hmt || [];
         </div>
     </div>
     <!--热销商品-end-->
-
     <!--猜您喜欢-start-->
     <div class="floor guesslike">
         <div class="banner">
@@ -274,6 +273,7 @@ var _hmt = _hmt || [];
         <div class="likeshop">
             <div id="J_ItemList">
                 <ul class="product single_item info">
+
                 </ul>
             </div>
         </div>
@@ -294,6 +294,7 @@ var _hmt = _hmt || [];
     /**
      * 秒杀模块倒计时
      * */
+
     function GetRTime(end_time){
         var NowTime = new Date();
         var t = (end_time*1000) - NowTime.getTime();
@@ -319,11 +320,25 @@ var _hmt = _hmt || [];
      * */
     var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
     var page = 0;
+    var goods_id = sessionStorage.getItem("goods_id");
+    if(goods_id != null){
+        page=sessionStorage.getItem("page");
+        $("#J_ItemList").html(sessionStorage.getItem("pList"));
+        document.body.scrollTop = sessionStorage.getItem("top");
+        sessionStorage.removeItem("top");
+        sessionStorage.removeItem("page");
+        sessionStorage.removeItem("pList");
+    }
+
+
+
     function ajax_sourch_submit(){
+
         if(before_request == 0)// 上一次请求没回来 不进行下一次请求
             return false;
         before_request = 0;
         page++;
+
         $.ajax({
             type : "get",
             url:"/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page,
@@ -332,6 +347,10 @@ var _hmt = _hmt || [];
                 if(data){
                     $("#J_ItemList>ul").append(data);
                     before_request = 1;
+                    var pList = $("#J_ItemList").html();
+                    sessionStorage.setItem('pList', pList);
+                    sessionStorage.setItem('page', page);
+                    sessionStorage.setItem('top', $(window).scrollTop());
                 }else{
                     $('.get_more').hide();
                 }

@@ -31,6 +31,8 @@ class Index extends MobileBase {
         $thems = M('goods_category')->where('level=1')->order('sort_order')->limit(9)->cache(true,TPSHOP_CACHE_TIME)->select();
         $this->assign('thems',$thems);
         $this->assign('hot_goods',$hot_goods);
+
+
         $favourite_goods = M('goods')->where("is_recommend=1 and is_on_sale=1")->order('goods_id DESC')->limit(20)->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
 
         //秒杀商品
@@ -85,10 +87,10 @@ class Index extends MobileBase {
     
     public function ajaxGetMore(){
     	$p = I('p/d',1);
-//        $where = ['is_recommend'=>1,'is_on_sale'=>1,'virtual_indate'=>['exp',' = 0 OR virtual_indate > '.time()]];
         $where = ['is_recommend'=>1,'is_on_sale'=>1];
-    	$favourite_goods = Db::name('goods')->where($where)->order('goods_id DESC')->page($p,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
+        $favourite_goods = M('goods')->where($where)->order('goods_id DESC')->page($p,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();
         $this->assign('favourite_goods',$favourite_goods);
+        $this->assign('pp',$p);
     	return $this->fetch();
     }
     

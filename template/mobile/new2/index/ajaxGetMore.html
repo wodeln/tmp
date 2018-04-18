@@ -1,7 +1,7 @@
 <foreach name="favourite_goods" item="v">
-<li>
+<li id="g_{$v[goods_id]}">
 	<div class="similer-product products_kuang">   
-		<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
+		<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id],'pp'=>$pp))}" title="{$v.goods_name}">
 		<img src="{$v[goods_id]|goods_thum_images=400,400}"/>
 		<span class="similar-product-text">{$v[goods_name]|getSubstr=0,20}</span>
 		</a>

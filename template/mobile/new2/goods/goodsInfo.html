@@ -496,7 +496,9 @@
         initSpec();
         sel(); //在已选栏中显示默认选择属性，数量
         initGoodsPrice();
+        sessionStorage.setItem("goods_id",{$goods.goods_id});
     });
+
     /**
      * 购买初始化
      */

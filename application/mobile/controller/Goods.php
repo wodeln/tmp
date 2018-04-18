@@ -155,6 +155,7 @@ class Goods extends MobileBase {
      * 商品详情页
      */
     public function goodsInfo(){
+
         C('TOKEN_ON',true);        
         $goodsLogic = new GoodsLogic();
         $goods_id = I("get.id/d");
@@ -163,6 +164,7 @@ class Goods extends MobileBase {
         if(empty($goods) || ($goods['is_on_sale'] == 0) || ($goods['is_virtual']==1 && $goods['virtual_indate'] <= time())){
             $this->error('此商品不存在或者已下架');
         }
+
         $goodsPromFactory = new GoodsPromFactory();
         if (!empty($goods['prom_id']) && $goodsPromFactory->checkPromType($goods['prom_type'])) {
             $goodsPromLogic = $goodsPromFactory->makeModule($goods, null);//这里会自动更新商品活动状态，所以商品需要重新查询
@@ -197,6 +199,7 @@ class Goods extends MobileBase {
         $point_rate = tpCache('shopping.point_rate');
         $this->assign('goods_collect_count',$goods_collect_count); //商品收藏人数
         $this->assign('point_rate', $point_rate);
+        $this->assign('pp', I("pp"));
         return $this->fetch();
     }
 
